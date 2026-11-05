@@ -1,0 +1,10 @@
+paths:
+  ocm_raw_json_path: /Volumes/dp-ev_charging-001/landing/files/ocm/
+
+ocm:
+  base_url: https://api.openchargemap.io/v3/poi/
+  params:
+    maxresults: 100000
+    compact: true
+    verbose: false
+    client: my-italy-script
