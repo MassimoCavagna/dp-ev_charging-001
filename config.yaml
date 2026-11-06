@@ -3,8 +3,3 @@ paths:
 
 ocm:
   base_url: https://api.openchargemap.io/v3/poi/
-  params:
-    maxresults: 100000
-    compact: true
-    verbose: false
-    client: my-italy-script

@@ -1,0 +1,103 @@
+source_table: bronze.ocm_poi
+target_table: silver.ocm_poi
+key: [POI_ID]
+
+columns:
+  # --- POI level ---
+  - source: ID
+    target: POI_ID
+  - source: UUID
+    target: POI_UUID
+  - source: DataProviderID
+    target: DATA_PROVIDER_ID
+  - source: DataProvidersReference
+    target: DATA_PROVIDER_REFERENCE
+    steps: [trim, nullif_empty]
+  - source: OperatorID
+    target: OPERATOR_ID
+  - source: OperatorsReference
+    target: OPERATOR_REFERENCE
+    steps: [trim, nullif_empty]
+  - source: UsageTypeID
+    target: USAGE_TYPE_ID
+  - source: UsageCost
+    target: USAGE_COST
+    steps: [trim, nullif_empty]
+  - source: NumberOfPoints
+    target: NUMBER_OF_POINTS
+  - source: GeneralComments
+    target: GENERAL_COMMENTS
+    steps: [trim, nullif_empty]
+  - source: StatusTypeID
+    target: STATUS_TYPE_ID
+  - source: SubmissionStatusTypeID
+    target: SUBMISSION_STATUS_TYPE_ID
+  - source: DataQualityLevel
+    target: DATA_QUALITY_LEVEL
+  - source: IsRecentlyVerified
+    target: IS_RECENTLY_VERIFIED
+  - source: DateLastVerified
+    target: LAST_VERIFIED_AT
+    steps: [nullif_empty, to_timestamp]
+  - source: DateLastStatusUpdate
+    target: LAST_STATUS_UPDATE_AT
+    steps: [nullif_empty, to_timestamp]
+  - source: DateCreated
+    target: CREATED_AT
+    steps: [nullif_empty, to_timestamp]
+
+  # --- AddressInfo (flattened, ADDRESS_ prefix avoids clashes with POI columns) ---
+  - source: AddressInfo.ID
+    target: ADDRESS_ID
+  - source: AddressInfo.Title
+    target: ADDRESS_TITLE
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.AddressLine1
+    target: ADDRESS_LINE_1
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.AddressLine2
+    target: ADDRESS_LINE_2
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.Town
+    target: ADDRESS_TOWN
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.StateOrProvince
+    target: ADDRESS_STATE_OR_PROVINCE
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.Postcode
+    target: ADDRESS_POSTCODE
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.CountryID
+    target: ADDRESS_COUNTRY_ID
+  - source: AddressInfo.Latitude
+    target: ADDRESS_LATITUDE
+  - source: AddressInfo.Longitude
+    target: ADDRESS_LONGITUDE
+  - source: AddressInfo.ContactTelephone1
+    target: ADDRESS_CONTACT_TELEPHONE_1
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.ContactTelephone2
+    target: ADDRESS_CONTACT_TELEPHONE_2
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.ContactEmail
+    target: ADDRESS_CONTACT_EMAIL
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.AccessComments
+    target: ADDRESS_ACCESS_COMMENTS
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.RelatedURL
+    target: ADDRESS_RELATED_URL
+    steps: [trim, nullif_empty]
+  - source: AddressInfo.DistanceUnit
+    target: ADDRESS_DISTANCE_UNIT
+
+  # --- technical columns added at bronze load ---
+  - source: run_id
+    target: RUN_ID
+  - source: source_file_name
+    target: SOURCE_FILE_NAME
+  - source: ingestet_at
+    target: INGESTED_AT
+
+dropped:
+  - Connections   # modeled in silver.ocm_connection
