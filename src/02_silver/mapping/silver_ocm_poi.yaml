@@ -47,48 +47,51 @@ columns:
     steps: [nullif_empty, to_timestamp]
 
   # --- AddressInfo (flattened, ADDRESS_ prefix avoids clashes with POI columns) ---
-  - source: AddressInfo.ID
+  - source: AddressInfo
+    target: AddressInfo
+    steps: [flatten_struct]
+  - source: AddressInfo_ID
     target: ADDRESS_ID
-  - source: AddressInfo.Title
+  - source: AddressInfo_Title
     target: ADDRESS_TITLE
     steps: [trim, nullif_empty]
-  - source: AddressInfo.AddressLine1
+  - source: AddressInfo_AddressLine1
     target: ADDRESS_LINE_1
     steps: [trim, nullif_empty]
-  - source: AddressInfo.AddressLine2
+  - source: AddressInfo_AddressLine2
     target: ADDRESS_LINE_2
     steps: [trim, nullif_empty]
-  - source: AddressInfo.Town
+  - source: AddressInfo_Town
     target: ADDRESS_TOWN
     steps: [trim, nullif_empty]
-  - source: AddressInfo.StateOrProvince
+  - source: AddressInfo_StateOrProvince
     target: ADDRESS_STATE_OR_PROVINCE
     steps: [trim, nullif_empty]
-  - source: AddressInfo.Postcode
+  - source: AddressInfo_Postcode
     target: ADDRESS_POSTCODE
     steps: [trim, nullif_empty]
-  - source: AddressInfo.CountryID
+  - source: AddressInfo_CountryID
     target: ADDRESS_COUNTRY_ID
-  - source: AddressInfo.Latitude
+  - source: AddressInfo_Latitude
     target: ADDRESS_LATITUDE
-  - source: AddressInfo.Longitude
+  - source: AddressInfo_Longitude
     target: ADDRESS_LONGITUDE
-  - source: AddressInfo.ContactTelephone1
+  - source: AddressInfo_ContactTelephone1
     target: ADDRESS_CONTACT_TELEPHONE_1
     steps: [trim, nullif_empty]
-  - source: AddressInfo.ContactTelephone2
+  - source: AddressInfo_ContactTelephone2
     target: ADDRESS_CONTACT_TELEPHONE_2
     steps: [trim, nullif_empty]
-  - source: AddressInfo.ContactEmail
+  - source: AddressInfo_ContactEmail
     target: ADDRESS_CONTACT_EMAIL
     steps: [trim, nullif_empty]
-  - source: AddressInfo.AccessComments
+  - source: AddressInfo_AccessComments
     target: ADDRESS_ACCESS_COMMENTS
     steps: [trim, nullif_empty]
-  - source: AddressInfo.RelatedURL
+  - source: AddressInfo_RelatedURL
     target: ADDRESS_RELATED_URL
     steps: [trim, nullif_empty]
-  - source: AddressInfo.DistanceUnit
+  - source: AddressInfo_DistanceUnit
     target: ADDRESS_DISTANCE_UNIT
 
   # --- technical columns added at bronze load ---
@@ -99,5 +102,6 @@ columns:
   - source: ingestet_at
     target: INGESTED_AT
 
-dropped:
-  - Connections   # modeled in silver.ocm_connection
+  - source: Connections  
+    target: Connections 
+    steps: [drop_column]
