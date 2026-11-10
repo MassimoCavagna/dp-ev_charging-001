@@ -1,9 +1,9 @@
+project_id: dp-ev_charging-001
 source_table: bronze.ocm_poi
 target_table: silver.ocm_poi
 key: [POI_ID]
 
-columns:
-  # --- POI level ---
+schema:
   - source: ID
     target: POI_ID
   - source: UUID
@@ -46,10 +46,6 @@ columns:
     target: CREATED_AT
     steps: [nullif_empty, to_timestamp]
 
-  # --- AddressInfo (flattened, ADDRESS_ prefix avoids clashes with POI columns) ---
-  - source: AddressInfo
-    target: AddressInfo
-    steps: [flatten_struct]
   - source: AddressInfo_ID
     target: ADDRESS_ID
   - source: AddressInfo_Title
@@ -95,13 +91,12 @@ columns:
     target: ADDRESS_DISTANCE_UNIT
 
   # --- technical columns added at bronze load ---
-  - source: run_id
+  - source: _run_id
     target: RUN_ID
-  - source: source_file_name
+  - source: _source_file_name
     target: SOURCE_FILE_NAME
-  - source: ingestet_at
+  - source: _ingested_at
     target: INGESTED_AT
 
-  - source: Connections  
-    target: Connections 
-    steps: [drop_column]
+flatten_json_struct: [AddressInfo]
+drop: [Connections]

@@ -1,0 +1,60 @@
+project_id: dp-ev_charging-001
+source_table: bronze.ocm_poi
+target_table: silver.ocm_connections
+key: [CONNECTION_ID]
+
+schema:
+  - source: ID
+    target: POI_ID
+  - source: Connections_ID
+    target: CONNECTION_ID
+  - source: Connections_ConnectionTypeID
+    target: TYPE_ID
+  - source: Connections_StatusTypeID
+    target: STATUS_TYPE_ID
+  - source: Connections_LevelID
+    target: LEVEL_ID
+  - source: Connections_CurrentTypeID
+    target: CURRENT_TYPE_ID
+  - source: Connections_Amps
+    target: AMPS
+  - source: Connections_Voltage
+    target: VOLTAGE
+  - source: Connections_PowerKW
+    target: POWER_KW
+  - source: Connections_Quantity
+    target: QUANTITY
+  - source: Connections_Reference
+    target: REFERENCE
+  - source: Connections_Comments
+    target: COMMENTS
+  # --- technical columns added at bronze load ---
+  - source: _run_id
+    target: RUN_ID
+  - source: _source_file_name
+    target: SOURCE_FILE_NAME
+  - source: _ingested_at
+    target: INGESTED_AT
+    
+explode_array: [Connections]
+flatten_json_struct: [Connections]
+drop: [
+  UUID,
+  DataProviderID,
+  DataProvidersReference,
+  OperatorID,
+  OperatorsReference,
+  UsageTypeID,
+  UsageCost,
+  NumberOfPoints,
+  GeneralComments,
+  StatusTypeID,
+  SubmissionStatusTypeID,
+  DataQualityLevel,
+  IsRecentlyVerified,
+  DateLastVerified,
+  DateLastStatusUpdate,
+  DateCreated,
+  AddressInfo
+]
+  
